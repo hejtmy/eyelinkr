@@ -1,5 +1,48 @@
-# SR 1000 Eyelink eyetracker functions
-read_eye_fixations <- function(text){
+#' Loads in sr 1000 asc file and outputs a list
+#'
+#' @param filepath path to the asc file
+#'
+#' @return
+#' @export
+#'
+#' @examples
+load_asc_file <- function(filepath){
+  text <- readLines(filepath)
+  ls <- list()
+  #ls$gaze <- parse_gaze(text)
+  ls$fixations <- parse_fixations(text)
+  ls$events <- parse_events(text)
+  #ls$calibration <- parse_calibrations(text)
+  return(ls)
+}
+
+#' Reads eye fixations from a asc file
+#'
+#' @param filepath Path to the asc file
+#'
+#' @return
+#' @export
+#'
+#' @examples
+read_fixations <- function(filepath){
+  text <- readLines(filepath)
+  df <- parse_fixations(text)
+  return(df)
+}
+
+#' Decodes fixations from the given character vector
+#'
+#' @description Used in case you load the text elsewhere or you just
+#' want to decode parts of it. In case you want to parse entire file, you can
+#' use read_fixations instead
+#'
+#' @param text
+#'
+#' @return
+#' @export
+#'
+#' @examples
+parse_fixations <- function(text){
   FIX_idxs <- grep('^EFIX.*', text)
   lines <- text[FIX_idxs]
 
@@ -8,21 +51,47 @@ read_eye_fixations <- function(text){
   lines <- gsub('^EFIX L\\s+', '', lines, perl = T)
 
   #creates one file with each char on a single line
-  text <- paste(lines, sep="", collapse="\n")
-  tab <- read.table(text = text, sep = "\t", header = F)
-  colnames(tab) <- c("start", "end", "no_idea_1", "x", "y", "no_idea_2")
-  tab$duration <- tab$end - tab$start
+  text <- paste(lines, sep = "", collapse="\n")
+  df <- read.table(text = text, sep = "\t", header = F)
+  colnames(df) <- c("start", "end", "no_idea_1", "x", "y", "no_idea_2")
+  df$duration <- df$end - df$start
+  return(df)
+}
+
+#' Reads in events from the given filepath
+#'
+#' @param filepath path to the asc file
+#'
+#' @return data.frame with the events
+#' @export
+#'
+#' @examples
+read_events <- function(filepath){
+  text <- readLines(filepath)
+  tab <- parse_events(text)
   return(tab)
 }
 
-read_eye_events <- function(text){
+#' Decodes events from passed sr1000 text file
+#'
+#' @description Used in case you load the text elsewhere or you just
+#' want to decode parts of it. In case you want to parse entire file, you can
+#' use read_events instead
+#'
+#' @param text
+#'
+#' @return data.frame
+#' @export
+#'
+#' @examples
+parse_events <- function(text){
   EVENT_NAMES <- c("KEY_UP", "KEY_DOWN")
   i_msg <- grep('^MSG\\t+.*', text)
   lines <- text[i_msg]
   i_events <- sapply(lines, contains_word, EVENT_NAMES)
   lines <- lines[i_events]
   #removing the MSG part
-  lines = gsub('^MSG\t', '', lines, perl = T)
+  lines <- gsub('^MSG\t', '', lines, perl = T)
   #creates one file with each char on a single line
   text <- paste(lines, sep = "", collapse = "\n")
   tab <- read.table(text = text, sep = " ", header = F)
@@ -31,42 +100,68 @@ read_eye_events <- function(text){
   return(tab)
 }
 
-read_eye_movements <- function(text){
-  DATA_indexes <- grep("^[0-9]+.*$", text)
-  pseudo_file <- paste(text[DATA_indexes], collapse="\n")
-  dat <- read.table(text = pseudo_file, header = F, col.names = c("frame", "x", "y", "pupil", "no_idea", "some_dots"))
-  dat$x <- as.double(dat$x)
-  dat$y <- as.double(dat$y)
-  return(dat)
+#' Read gaze data from the asc
+#'
+#' @param filepath path to the asc file
+#'
+#' @return
+#' @export
+#'
+#' @examples
+read_gaze <- function(filepath){
+  text <- readLines(filepath)
+  df <- parse_gaze(text)
+  return(df)
 }
 
-read_calibrations <- function(text, ncal){
+#' Decodes gaze information from passed parsed asc text
+#'
+#' @description Used in case you load the text elsewhere or you just
+#' want to decode parts of it. In case you want to parse entire file, you can
+#' use read_gaze instead
+#'
+#' @param text character vector of the asc file
+#'
+#' @return data.frame with the gaze
+#' @export
+#'
+#' @examples
+parse_gaze <- function(text){
+  DATA_indexes <- grep("^[0-9]+.*$", text)
+  pseudo_file <- paste(text[DATA_indexes], collapse="\n")
+  df <- read.table(text = pseudo_file, header = F, col.names = c("frame", "x", "y", "pupil", "no_idea", "some_dots"))
+  df$x <- as.double(df$x)
+  df$y <- as.double(df$y)
+  return(df)
+}
+
+#' Reads in calibration
+#'
+#' @param text character vector of the asc file
+#'
+#' @return
+#' @export
+#'
+#' @examples
+parse_calibrations <- function(text){
   #will produce empty lines in the calibration
   calibrations <- data.frame(
-    calib.time  = numeric(n.calibrations),
-    trial       = numeric(n.calibrations),
-    eye         = character(n.calibrations),
-    rating      = character(n.calibrations),
-    error.avg   = numeric(n.calibrations),
-    error.max   = numeric(n.calibrations),
+    calib.time  = numeric(0),
+    trial       = numeric(0),
+    eye         = character(0),
+    rating      = character(0),
+    error.avg   = numeric(0),
+    error.max   = numeric(0),
     stringsAsFactors = F)
-  ncal <- 0
   for (line in text)
-    if (grepl("!CAL VALIDATION", line) &
-        !grepl("ABORTED", line)) {
+    if (grepl("!CAL VALIDATION", line) & !grepl("ABORTED", line)) {
       msg <- unlist(strsplit(line, "[\t ]"))
-      ncal <- ncal + 1
-      v.eye    <- msg[7]
-      v.rating <- msg[8]
-      v.error.avg <- as.numeric(msg[10])
-      v.error.max <- as.numeric(msg[12])
-      calibrations$calib.time[ncal]  <- etime
-      calibrations$trial[ncal]  <- current.trial
-      calibrations$eye[ncal]    <- v.eye
-      calibrations$rating[ncal] <- v.rating
-      calibrations$error.avg[ncal] <- v.error.avg
-      calibrations$error.max[ncal] <- v.error.max
-    }
+      ls <- list(calib.time = etime, trial = current.trial,
+                 eye = msg[7], rating = msg[8],
+                 error.avg = as.numeric(msg[10]),
+                 error.max = as.numeric(msg[12]))
+      calibrations <- rbind(calibrations, ls)
+      }
   return(calibrations)
 }
 
