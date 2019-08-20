@@ -1,9 +1,9 @@
 preprocess_eye_events <- function(df_events){
   ls <- list()
-  df_events <- SR1000.remove_brackets(df_events)
-  df_events <- SR1000.remove_key_up(df_events)
-  df_events <- SR1000.remove_walking_keys(df_events)
-  df_events <- SR1000.remove_event_keys(df_events, ';')
+  df_events <- remove_brackets(df_events)
+  df_events <- remove_key_up(df_events)
+  df_events <- remove_walking_keys(df_events)
+  df_events <- remove_event_keys(df_events, ';')
   return(df_events)
 }
 
@@ -19,7 +19,7 @@ remove_key_up <- function(df_events){
 }
 
 remove_walking_keys <- function(df_events){
-  df_events <- SR1000.remove_event_keys(df_events, c('w','a','s','d', 'UP', 'BACK'))
+  df_events <- remove_event_keys(df_events, c('w','a','s','d','UP','BACK'))
   return(df_events)
 }
 

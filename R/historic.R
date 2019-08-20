@@ -1,4 +1,3 @@
-
 ### Historic ----
 clean.paf <- function(paf) {
   good.states <- c("GOOD")

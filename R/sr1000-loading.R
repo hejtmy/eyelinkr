@@ -120,5 +120,3 @@ read_resolution <- function(filepath){
   close(con)
   return(disp_resolution)
 }
-
-# PREPROCESSING -----------------------
