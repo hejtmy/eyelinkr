@@ -14,7 +14,7 @@ remove_brackets <- function(df_events){
 }
 
 remove_key_up <- function(df_events){
-  df_events <- df_events[df_events$name == "KEY_UP",]
+  df_events <- df_events[df_events$name == "KEY_UP", ]
   return(df_events)
 }
 
@@ -24,11 +24,11 @@ remove_walking_keys <- function(df_events){
 }
 
 remove_event_keys <- function(df_events, keys){
-  df_events <- df_events[!(df_events$type %in% keys),]
+  df_events <- df_events[!(df_events$type %in% keys), ]
   return(df_events)
 }
 
-preprocess_eye_fixations <- function(df_fixations){
+preprocess_eye_fixations <- function(df_fixations, disp_resolution){
   df_fixations$position_y <- disp_resolution$height - df_fixations$positions_y
   return(df_fixations)
 }
