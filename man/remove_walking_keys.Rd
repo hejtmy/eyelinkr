@@ -4,10 +4,10 @@
 \alias{remove_walking_keys}
 \title{Helper to remove keys which are used for walking in 3D games}
 \usage{
-remove_walking_keys(df_events)
+remove_walking_keys(df)
 }
 \arguments{
-\item{df_events}{df event data.frame as loaded by `read_events` or `parse_events`}
+\item{df}{event data.frame as loaded by `read_events` or `parse_events`}
 }
 \description{
 basically just a shorthand for `remove_event_keys(events, c('w','a','s','d','UP','BACK', 'LEFT', 'RIGHT'))`

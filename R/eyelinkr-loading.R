@@ -53,8 +53,7 @@ parse_fixations <- function(text){
   #creates one file with each char on a single line
   text <- paste(lines, sep = "", collapse="\n")
   df <- read.table(text = text, sep = "\t", header = F)
-  colnames(df) <- c("start", "end", "no_idea_1", "x", "y", "no_idea_2")
-  df$duration <- df$end - df$start
+  colnames(df) <- c("start", "end", "duration", "x", "y", "no_idea")
   return(df)
 }
 

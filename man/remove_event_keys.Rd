@@ -4,13 +4,13 @@
 \alias{remove_event_keys}
 \title{Removes events with unwanted keys}
 \usage{
-remove_event_keys(df_events, keys)
+remove_event_keys(df, keys)
 }
 \arguments{
-\item{df_events}{df event data.frame as loaded by `read_events` or `parse_events`}
-
 \item{keys}{character vector of all the keys you want to remove. e.g c("w", "a"). If you didn't
 use the remove bracket function, these need to be in the [w] format}
+
+\item{df_events}{df event data.frame as loaded by `read_events` or `parse_events`}
 }
 \description{
 Removes events with unwanted keys
