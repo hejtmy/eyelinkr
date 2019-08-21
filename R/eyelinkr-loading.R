@@ -129,7 +129,7 @@ parse_gaze <- function(text){
   DATA_indexes <- grep("^[0-9]+.*$", text)
   pseudo_file <- paste(text[DATA_indexes], collapse = "\n")
   df <- read.table(text = pseudo_file, header = F,
-                   col.names = c("timestamp", "x", "y", "pupil", "some_dots"),
+                   col.names = c("timestamp", "x", "y", "diameter", "some_dots"),
                    fill = T, stringsAsFactors = F)
   df$x[df$x == "."] <- NA
   df$y[df$y == "."] <- NA

@@ -27,6 +27,7 @@ remove_event_brackets <- function(df){
 #' @examples
 remove_key_up <- function(df){
   df <- df[df$action == "KEY_UP", ]
+  df$action <- factor(df$action) #refactors after removing one level
   return(df)
 }
 
