@@ -9,7 +9,7 @@
 load_asc_file <- function(filepath){
   text <- readLines(filepath)
   ls <- list()
-  #ls$gaze <- parse_gaze(text)
+  ls$gaze <- parse_gaze(text)
   ls$fixations <- parse_fixations(text)
   ls$events <- parse_events(text)
   #ls$calibration <- parse_calibrations(text)
@@ -129,7 +129,11 @@ read_gaze <- function(filepath){
 parse_gaze <- function(text){
   DATA_indexes <- grep("^[0-9]+.*$", text)
   pseudo_file <- paste(text[DATA_indexes], collapse = "\n")
-  df <- read.table(text = pseudo_file, header = F, col.names = c("frame", "x", "y", "pupil", "no_idea", "some_dots"))
+  df <- read.table(text = pseudo_file, header = F,
+                   col.names = c("timestamp", "x", "y", "pupil", "some_dots"),
+                   fill = T, stringsAsFactors = F)
+  df$x[df$x == "."] <- NA
+  df$y[df$y == "."] <- NA
   df$x <- as.double(df$x)
   df$y <- as.double(df$y)
   return(df)
