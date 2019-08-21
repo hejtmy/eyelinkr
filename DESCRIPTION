@@ -1,6 +1,6 @@
-Package: sr1000
+Package: eyelinkr
 Type: Package
-Title: Loading and preprocessing of sr1000 eyetracking data
+Title: Loading and preprocessing of eyelinkr data
 Version: 0.1.0
 Author: Lukáš 'hejtmy' Hejtmánek
 Maintainer: Lukáš 'hejtmy' Hejtmánek <hejtmy@gmail.com>
