@@ -8,8 +8,8 @@
 #' @examples
 remove_event_brackets <- function(df){
   rm_brackets <- function(x) gsub("\\[|\\]", "", x)
-  df_events$type <- sapply(df_events$type, rm_brackets)
-  return(df_events)
+  df$name <- sapply(df$name, rm_brackets)
+  return(df)
 }
 
 #' Helper to remove all depression of keys
@@ -26,7 +26,7 @@ remove_event_brackets <- function(df){
 #'
 #' @examples
 remove_key_up <- function(df){
-  df <- df[df$name == "KEY_UP", ]
+  df <- df[df$action == "KEY_UP", ]
   return(df)
 }
 
@@ -34,16 +34,16 @@ remove_key_up <- function(df){
 #'
 #' @description basically just a shorthand for `remove_event_keys(events, c('w','a','s','d','UP','BACK', 'LEFT', 'RIGHT'))`
 #'
-#' @param df_events df event data.frame as loaded by `read_events` or `parse_events`
+#' @param df event data.frame as loaded by `read_events` or `parse_events`
 #'
 #' @return
 #' @export
 #'
 #' @examples
-remove_walking_keys <- function(df_events){
-  df_events <- remove_event_keys(df_events, c('w','a','s','d','UP','BACK', 'LEFT', 'RIGHT'))
-  df_events <- remove_event_keys(df_events, c('[w]','[a]','[s]','[d]','[UP]','[BACK]','[LEFT]','[RIGHT]'))
-  return(df_events)
+remove_walking_keys <- function(df){
+  df <- remove_event_keys(df, c('w','a','s','d','UP','BACK', 'LEFT', 'RIGHT'))
+  df <- remove_event_keys(df, c('[w]','[a]','[s]','[d]','[UP]','[BACK]','[LEFT]','[RIGHT]'))
+  return(df)
 }
 
 #' Removes events with unwanted keys
@@ -56,9 +56,9 @@ remove_walking_keys <- function(df_events){
 #' @export
 #'
 #' @examples
-remove_event_keys <- function(df_events, keys){
-  df_events <- df_events[!(df_events$type %in% keys), ]
-  return(df_events)
+remove_event_keys <- function(df, keys){
+  df <- df[!(df$name %in% keys), ]
+  return(df)
 }
 
 #' Flips the Y axis, which is logged with the 0 in bottom left corner

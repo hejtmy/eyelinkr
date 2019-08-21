@@ -96,7 +96,7 @@ parse_events <- function(text){
   text <- paste(lines, sep = "", collapse = "\n")
   tab <- read.table(text = text, sep = " ", header = F)
   tab[, c("V2", "V4", "V5", "V6")] <- NULL
-  colnames(tab) <- c("time", "name", "type")
+  colnames(tab) <- c("time", "action", "name")
   return(tab)
 }
 
