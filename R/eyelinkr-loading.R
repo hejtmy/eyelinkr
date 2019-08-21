@@ -128,7 +128,7 @@ read_gaze <- function(filepath){
 #' @examples
 parse_gaze <- function(text){
   DATA_indexes <- grep("^[0-9]+.*$", text)
-  pseudo_file <- paste(text[DATA_indexes], collapse="\n")
+  pseudo_file <- paste(text[DATA_indexes], collapse = "\n")
   df <- read.table(text = pseudo_file, header = F, col.names = c("frame", "x", "y", "pupil", "no_idea", "some_dots"))
   df$x <- as.double(df$x)
   df$y <- as.double(df$y)
