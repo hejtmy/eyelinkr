@@ -15,7 +15,7 @@
 convert_to_eyer <- function(obj){
   # validations
   REQUIRED_DATA_FILEDS <- c("gaze", "fixations")
-  if(!all(REQUIRED_DATA_FILEDS %in% names(ls$data))){
+  if(!all(REQUIRED_DATA_FILEDS %in% names(obj$data))){
     warning("Data don't include all required fields", REQUIRED_DATA_FILEDS)
     return(obj)
   }
