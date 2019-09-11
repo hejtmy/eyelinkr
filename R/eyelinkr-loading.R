@@ -2,7 +2,7 @@
 #'
 #' @param filepath path to the asc file
 #'
-#' @return
+#' @return list with gaze, fixations and events
 #' @export
 #'
 #' @examples
@@ -12,6 +12,7 @@ load_asc_file <- function(filepath){
   ls$gaze <- parse_gaze(text)
   ls$fixations <- parse_fixations(text)
   ls$events <- parse_events(text)
+  ls$info$frequency <- parse_logging_rate(text)
   #ls$calibration <- parse_calibrations(text)
   return(ls)
 }
@@ -20,7 +21,7 @@ load_asc_file <- function(filepath){
 #'
 #' @param filepath Path to the asc file
 #'
-#' @return
+#' @return data.frame with fixations
 #' @export
 #'
 #' @examples
@@ -192,6 +193,30 @@ read_which_eye <- function(filepath){
   }
   close(con)
   return("unknown")
+}
+
+#' Fetches logging frequency
+#'
+#' @details information from the passed asc text
+#' @description Used in case you load the text elsewhere or you just
+#' want to decode the frequency. Goes line by line through parts of the text.
+#' IN the asc, the frequnecy is found in line "SAMPLES	GAZE	RIGHT	RATE	1000.00 ...."
+#'
+#' @param text loaded asc file as a text
+#'
+#' @return numeric rate of logging
+#' @export
+#'
+#' @examples
+parse_logging_rate <- function(text){
+  for (line in text){
+    ptr <- "SAMPLES\\s+GAZE\\s+.*RATE\\s+([0-9]+).*"
+    if(grepl(ptr, line)) {
+      rate <- gsub(ptr, "\\1", line)
+      return(as.numeric(rate))
+    }
+  }
+  return(NULL)
 }
 
 # goes through the asc log and finds display options

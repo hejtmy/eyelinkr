@@ -1,3 +1,29 @@
+#' Converts loaded data to EyerObject
+#' @details the data is a list with fixations, gaze and events fields. It converts them to the
+#' Eyer object structure and does little preprocessing
+#'
+#' @description The EyerObject is a default eyetracking object to be used with the `eyer` package.
+#' It is recommended that you preprocess your data before converting it to eyer, as it might be more
+#' difficult to translate some data, especially events
+#'
+#' @param obj list loaded by \code{\link{load_asc}} and preprocessed
+#'
+#' @return EyerObject
+#' @export
+#'
+#' @examples
+convert_to_eyer <- function(obj){
+  # validations
+  REQUIRED_DATA_FILEDS <- c("gaze", "fixations")
+  if(!all(REQUIRED_DATA_FILEDS %in% names(ls))){
+    warning("Data don't include all required fields", REQUIRED_DATA_FILEDS)
+    return(obj)
+  }
+  gaze <- obj$gaze
+  gaze$some_dots <- NULL
+  start_time <- ""
+}
+
 #' Removes brackets from the parsed events
 #'
 #' @param df event data.frame as loaded by `read_events` or `parse_events`

@@ -24,7 +24,13 @@ test_that("loading events works", {
   expect_true(all(sapply(events, class) == column_classes))
 })
 
+test_that("reading of logging rate works", {
+  text <- readLines(test_path, n=250)
+  expect_silent(freq <- parse_logging_rate(text))
+  expect_true(freq == 1000)
+})
 
 test_that("loading completely works", {
   expect_silent(ls <- load_asc_file(test_path))
 })
+
