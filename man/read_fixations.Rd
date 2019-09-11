@@ -9,6 +9,9 @@ read_fixations(filepath)
 \arguments{
 \item{filepath}{Path to the asc file}
 }
+\value{
+data.frame with fixations
+}
 \description{
 Reads eye fixations from a asc file
 }

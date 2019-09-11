@@ -10,3 +10,7 @@ test_that("event preprocessing", {
   expect_silent(events_no_walking <- remove_walking_keys(events))
   expect_gt(nrow(events), nrow(events_no_walking))
 })
+
+test_that("convert to eyer works", {
+
+})

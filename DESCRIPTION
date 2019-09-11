@@ -1,11 +1,10 @@
 Package: eyelinkr
 Type: Package
 Title: Loading and preprocessing of eyelink data
-Version: 0.1.0
+Version: 0.1.2
 Author: Lukáš 'hejtmy' Hejtmánek
 Maintainer: Lukáš 'hejtmy' Hejtmánek <hejtmy@gmail.com>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: Package to load and preprocess eytracker data from Eyelink SR 1000
 License: MIT
 Encoding: UTF-8
 LazyData: true

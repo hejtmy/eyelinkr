@@ -9,6 +9,9 @@ load_asc_file(filepath)
 \arguments{
 \item{filepath}{path to the asc file}
 }
+\value{
+list with gaze, fixations and events
+}
 \description{
 Loads in sr 1000 asc file and outputs a list
 }

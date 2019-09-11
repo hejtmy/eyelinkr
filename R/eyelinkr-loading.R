@@ -8,10 +8,10 @@
 #' @examples
 load_asc_file <- function(filepath){
   text <- readLines(filepath)
-  ls <- list()
-  ls$gaze <- parse_gaze(text)
-  ls$fixations <- parse_fixations(text)
-  ls$events <- parse_events(text)
+  ls <- list(data=list(), info=list())
+  ls$data$gaze <- parse_gaze(text)
+  ls$data$fixations <- parse_fixations(text)
+  ls$data$events <- parse_events(text)
   ls$info$frequency <- parse_logging_rate(text)
   #ls$calibration <- parse_calibrations(text)
   return(ls)
@@ -96,7 +96,7 @@ parse_events <- function(text){
   text <- paste(lines, sep = "", collapse = "\n")
   tab <- read.table(text = text, sep = " ", header = F)
   tab[, c("V2", "V4", "V5", "V6")] <- NULL
-  colnames(tab) <- c("time", "action", "name")
+  colnames(tab) <- c("timestamp", "action", "name")
   return(tab)
 }
 
@@ -229,17 +229,16 @@ read_resolution <- function(filepath){
     if(grepl("DISPLAY_COORDS", line)){
       #' match two digits at least three digit long after Display coords
       #' ? signifies non greedy match (as least as possible)
-      ptr = ".*DISPLAY_COORDS.*?(\\d{3,})\\s*(\\d{3,})"
+      ptr <- ".*DISPLAY_COORDS.*?(\\d{3,})\\s*(\\d{3,})"
       disp_resolution = gsub(ptr, "\\1;\\2", line)
-      sep = strsplit(disp_resolution, ";")
-      width = as.numeric(sep[[1]][1])
-      height = as.numeric(sep[[1]][2])
-      width = ceiling(width/10)*10
-      height = ceiling(height/10)*10
-      disp_resolution = (list("width" = width, "height" = height))
-      break
+      sep <- strsplit(disp_resolution, ";")
+      width <- as.numeric(sep[[1]][1])
+      height <- as.numeric(sep[[1]][2])
+      width <- ceiling(width/10)*10
+      height <- ceiling(height/10)*10
+      close(con)
+      return(list("width" = width, "height" = height))
     }
   }
-  close(con)
   return(disp_resolution)
 }
