@@ -33,7 +33,7 @@ remove_key_up <- function(df){
 
 #' Helper to remove keys which are used for walking in 3D games
 #'
-#' @description basically just a shorthand for `remove_event_keys(events, c('w','a','s','d','UP','BACK', 'LEFT', 'RIGHT'))`
+#' @description basically just a shorthand for `remove_event_keys(events, c('w','a','s','d','UP','BACK', 'LEFT', 'RIGHT', 'DOWN'))`
 #'
 #' @param df event data.frame as loaded by `read_events` or `parse_events`
 #'
@@ -42,8 +42,8 @@ remove_key_up <- function(df){
 #'
 #' @examples
 remove_walking_keys <- function(df){
-  df <- remove_event_keys(df, c('w','a','s','d','UP','BACK', 'LEFT', 'RIGHT'))
-  df <- remove_event_keys(df, c('[w]','[a]','[s]','[d]','[UP]','[BACK]','[LEFT]','[RIGHT]'))
+  df <- remove_event_keys(df, c('w','a','s','d','UP','BACK', 'LEFT', 'RIGHT', 'DOWN'))
+  df <- remove_event_keys(df, c('[w]','[a]','[s]','[d]','[UP]','[BACK]','[LEFT]','[RIGHT]', '[DOWN]'))
   return(df)
 }
 
