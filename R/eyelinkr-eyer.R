@@ -31,7 +31,7 @@ convert_to_eyer <- function(obj){
   fixations <- remove_columns(fixations, c("start", "no_idea", "end"))
 
   events <- obj$data$events
-  events$time <- (events$timestamp - ls$info$start_time)/ls$info$frequency
+  events$timestamp <- (events$timestamp - ls$info$start_time)/ls$info$frequency
   events <- rename_column(events, "timestamp", "time")
 
   ls$data <- list(events = events, fixations = fixations, gaze = gaze)
